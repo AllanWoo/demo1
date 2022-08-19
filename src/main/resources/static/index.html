@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="http://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        body{
+            background-color: #EEEEEE;
+            margin: 0px;
+            padding: 0px;
+        }
+        table{
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        table,td,th{
+            border: 1px solid #888;
+            text-align: center;
+        }
+        .main{
+            width: 600px;
+            height: 300px;
+            background-color: #FFFFFF;
+            padding: 10px;
+            margin: 10px auto;
+            position: relative;
+        }
+        .main .content{
+            width: 300px;
+        }
+        .empty{
+            text-align: center;
+            padding: 4px;
+            display: block;
+            border: 0px solid #888;
+            border-width: 0px 1px 1px 1px;
+        }
+
+        .main .id{ width: 100px;}
+        .main .name{width: 100px;}
+        .main .adress{width: 100px;}
+    </style>
+</head>
+
+<body>
+<div class="main">
+    <button onclick="query()">查询</button>
+    <div class="content">
+        <table>
+            <thead>
+            <tr>
+                <th class="id">学号</th>
+                <th class="name">姓名</th>
+                <th class="adress">住址</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <div class="empty">
+            现在没有数据
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    //查询
+    function query()
+    {
+        $.ajax({
+            type:"GET",
+            url:"QueryAll",
+            dataType:"json",
+            success:function(resp)
+            {
+                show(resp);
+            }
+        });
+    }
+
+    //格式化数据并显示
+    function show(result)
+    {
+        var cont = $(".main tbody");
+        cont.html(""); //清空
+        for(var row of result)
+        {
+            var str = "<tr>"
+                +"<td>"+row.id+"</td>"
+                +"<td>"+row.name+"</td>"
+                +"<td>"+row.adress+"</td>"
+                +"</tr>";
+            cont.append(str);
+        }
+        //没有数据把空的内容显示出来
+        if(result.length>0)
+            $(".empty").hide();
+        else
+            $(".empty").show();
+    }
+
+</script>
+</html>
